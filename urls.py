@@ -22,6 +22,6 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     path('api/', include('account.urls')),
     path('api/', include('taskManager.urls')),
-    url(r'^.*', TemplateView.as_view(content_type='text/html',template_name="home.html"), name="home")
+    url(r'^.*', TemplateView.as_view(template_name="home.html"), name="home")
 ]
 
