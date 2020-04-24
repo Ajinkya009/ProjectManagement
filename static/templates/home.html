@@ -10,12 +10,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-  <link href="build/styles.6181d1e596cf0a9134b6.css" rel="stylesheet">
-  </head>
+  <link rel="stylesheet" href="{% static 'build/styles.css' %}"></head>
 <body>
 	<app-root></app-root>
-	<script type="text/javascript" src="{% static 'build/main-es2015.daed1ba93a1b857e89f6.js' %}"></script>
-	<script type="text/javascript" src="{% static 'build/polyfills-es2015.3984dc70ae4c07f65484.js' %}"></script>
-	<script type="text/javascript" src="{% static 'build/runtime-es2015.1eba213af0b233498d9d.js' %}"></script>
+	<script src="{% static 'build/runtime.js' %}"></script>
+	<script src="{% static 'build/polyfills.js' %}"></script>
+	<script src="{% static 'build/main.js' %}"></script>
 </body>
 </html>
