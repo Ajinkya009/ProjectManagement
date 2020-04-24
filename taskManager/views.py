@@ -24,10 +24,19 @@ class ProjectViewSet(viewsets.ModelViewSet):
 		serializer.save(admin=self.request.user)
 	
 	def get_queryset(self):
+		"""
+		Return distinct projects which satisfy following conditions:
+		1. User is owner of that project
+		2. User is assigned a task from that project
+		"""
 		user = self.request.user
 		return Project.objects.filter(Q(admin=user) | Q(tasks__assignee=user)).distinct()
 
 	def retrieve(self,request,*args,**kwargs):
+		"""
+		This method has been customised to append available users' list to project data.
+		This list will be used in assigning tasks to users.
+		"""
 		instance = self.get_object()
 		serializer = self.get_serializer(instance)
 		custom_data = {
