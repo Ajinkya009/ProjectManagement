@@ -1,0 +1,23 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Django-ng</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="{% static 'build/styles.css' %}"></head>
+<body>
+	<app-root></app-root>
+	<script type="text/javascript" src="{% static 'build/runtime-es5.js' %}"></script>
+  <script type="text/javascript" src="{% static 'build/runtime-es2015.js' %}"></script>
+	<script type="text/javascript" src="{% static 'build/polyfills-es5.js' %}"></script>
+  <script type="text/javascript" src="{% static 'build/polyfills-es2015.js' %}"></script>
+	<script type="text/javascript" src="{% static 'build/main-es5.js' %}"></script>
+  <script type="text/javascript" src="{% static 'build/main-es2015.js' %}"></script>
+</body>
+</html>
