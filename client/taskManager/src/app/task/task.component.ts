@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { taskDetails } from '../interfaces/taskDetails';
-import { TaskService } from '../task.service';
+import { TaskService } from './task.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import {Location} from '@angular/common';
-
+import { AssigneeService } from '../assignee.service';
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
@@ -28,6 +28,7 @@ export class TaskComponent implements OnInit {
   constructor(private taskService: TaskService,
     private router:Router,
     private toastr:ToastrService,
+    private assigneeService:AssigneeService,
     private route:ActivatedRoute,
     private location: Location
   ) { }
@@ -35,12 +36,19 @@ export class TaskComponent implements OnInit {
   ngOnInit(): void {
     let projectId = this.route.snapshot.params['projectId'];
     let taskId = this.route.snapshot.params['taskId'];
-    this.users = this.taskService.getUsers();
+
+    /* fetch all users */
+    this.assigneeService.fetchAllAssignees().subscribe((data:any)=>{
+      this.users = data;
+    },(err:HttpErrorResponse)=>{
+      this.toastr.error('Error!', err.error.detail);
+    });
+
+    /* fetch task details */
     this.taskService.fetchTaskDetails(projectId,taskId).subscribe((data:taskDetails)=>{
       this.taskData = data;
     },(err:HttpErrorResponse)=>{
       this.toastr.error('Error!', err.error.detail);
-      this.router.navigate(['dashboard']);
     });
   }
 

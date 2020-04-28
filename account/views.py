@@ -7,12 +7,12 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 #from account.models import Account
-from account.serializers import EmptySerializer,UserRegisterSerializer,AuthTokenSerializer,UserLoginSerializer
+from account.serializers import AccountSerializer,EmptySerializer,UserRegisterSerializer,AuthTokenSerializer,UserLoginSerializer
 from .utils import authenticateUser,create_user_account
 
 class AccountViewSet(viewsets.ModelViewSet):
 	
-	serializer_class = EmptySerializer
+	serializer_class = AccountSerializer
 	serializer_classes = {
 		'signup': UserRegisterSerializer,
 		'login': UserLoginSerializer
@@ -25,6 +25,9 @@ class AccountViewSet(viewsets.ModelViewSet):
 		if self.action in self.serializer_classes.keys():
 			return self.serializer_classes[self.action]
 		return super().get_serializer_class()
+	
+	def get_queryset(self):
+		return User.objects.all().order_by('id')
 
 	@action(methods=['POST',], detail=False)
 	def signup(self,request):

@@ -1,23 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatGridListModule } from '@angular/material/grid-list';
+import { FormsModule } from '@angular/forms';
 
 /*local components*/ 
+import { ProjectModule } from './project/project.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { AppComponent } from './app.component';
-import { AccountComponent } from './account/account.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { AccountGuard } from './account.guard';
-import { AccountService } from './account.service';
+import { AccountService } from './account/account.service';
+import { TokenInterceptor } from './token-interceptor';
+import { HeaderComponent } from './header/header.component';
+
 
 
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HeaderComponent } from './header/header.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
@@ -25,28 +26,25 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
-import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatGridListModule } from '@angular/material/grid-list';
 import {MatInputModule} from '@angular/material/input';
-import { ProjectComponent } from './project/project.component';
-import { TaskDialogComponent } from './task-dialog/task-dialog.component';
-import { TaskComponent } from './task/task.component';
+import { TaskModule } from './task/task.module';
+import { AccountModule } from './account/account.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AccountComponent,
-    DashboardComponent,
-    HeaderComponent,
-    ProjectDialogComponent,
-    ProjectComponent,
-    TaskDialogComponent,
-    TaskComponent
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    AccountModule,
+    ProjectModule,
+    DashboardModule,
+    TaskModule,
     AppRoutingModule,
     NgbModule,
     
@@ -71,31 +69,12 @@ import { TaskComponent } from './task/task.component';
     //router modules
     RouterModule.forRoot([
     {
-      path: 'login',
-      component: AccountComponent
-    },
-    {
-      path: 'dashboard',
-      component: DashboardComponent,
-      canActivate: [AccountGuard]
-    },
-    {
-      path: 'project/:projectId/task/:taskId',
-      component: TaskComponent,
-      canActivate: [AccountGuard]
-    },
-    {
-      path: 'project/:projectId',
-      component: ProjectComponent,
-      canActivate: [AccountGuard]
-    },
-    {
       path: '',
       component: AppComponent,
     }
     ])
   ],
-  providers: [AccountService,AccountGuard],
+  providers: [AccountService,AccountGuard,{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

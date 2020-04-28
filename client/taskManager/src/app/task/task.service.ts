@@ -11,17 +11,17 @@ export class TaskService {
 
   fetchTaskDetails(projectId,taskId){
     const auth_token = localStorage.getItem('auth_token');
-    return this.http.get(`/api/project/${projectId}/task/${taskId}/`,{headers:{Authorization:`Token ${auth_token}`}});
+    return this.http.get(`/api/project/${projectId}/task/${taskId}/`);
   }
 
   updateTask(taskData){
     const auth_token = localStorage.getItem('auth_token');
-    return this.http.put(`/api/project/${taskData.project}/task/${taskData.id}/`,taskData,{headers:{Authorization:`Token ${auth_token}`}});
+    return this.http.put(`/api/project/${taskData.project}/task/${taskData.id}/`,taskData);
   }
 
   deleteTask(projectId,taskId){
     const auth_token = localStorage.getItem('auth_token');
-    return this.http.delete(`/api/project/${projectId}/task/${taskId}/`,{headers:{Authorization:`Token ${auth_token}`}});
+    return this.http.delete(`/api/project/${projectId}/task/${taskId}/`);
   }
 
   setUsers(users){

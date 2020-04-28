@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '../project.service';
+import { ProjectService } from './project.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
-import { TaskService } from '../task.service';
+import { TaskDialogComponent } from './task-dialog/task-dialog.component';
+import { TaskService } from '../task/task.service';
 import { ToastrService } from 'ngx-toastr';
 import { projectDetails } from '../interfaces/projectDetails';
 import {Location} from '@angular/common';
+import { AssigneeService } from '../assignee.service';
 
 @Component({
   selector: 'app-project',
@@ -24,6 +25,7 @@ export class ProjectComponent implements OnInit {
   constructor(private projectService:ProjectService,
     private taskService: TaskService,
     private toastr: ToastrService, 
+    private assigneeService: AssigneeService,
     private router:Router,
     private route:ActivatedRoute,
     private dialog: MatDialog,
@@ -33,10 +35,17 @@ export class ProjectComponent implements OnInit {
   ngOnInit(): void {
     let projectId = this.route.snapshot.params['projectId'];
     localStorage.setItem('projectId',projectId);
+    
+    /* fetch all users */
+    this.assigneeService.fetchAllAssignees().subscribe((data:any)=>{
+      this.users = data;
+    },(err:HttpErrorResponse)=>{
+      this.toastr.error('Error!', err.error);
+    });
+
+    /* fetch project details*/
     this.projectService.fetchProjectDetails(projectId).subscribe((data:projectDetails)=>{
-      this.projectData = data['project'];
-      this.users = data['users'];
-      this.taskService.setUsers(this.users);
+      this.projectData = data;
       this.tasks = this.projectData.tasks;
     },(err:HttpErrorResponse)=>{
       this.toastr.error('Error!', err.error.detail);
@@ -45,7 +54,7 @@ export class ProjectComponent implements OnInit {
   }
 
   createNewTask(){
-    this.dialog.open(TaskDialogComponent,{data:{users:this.users}});
+    this.dialog.open(TaskDialogComponent);
   }
 
   openTask(taskId){

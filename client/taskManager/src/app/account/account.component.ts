@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { AccountService } from '../account.service';
+import { AccountService } from './account.service';
 import { SharedService } from '../shared.service';
 import { Router } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';

@@ -48,3 +48,10 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class EmptySerializer(serializers.Serializer):
 	pass
 
+class AccountSerializer(serializers.ModelSerializer):
+	"""
+	Serializer for listing all registered users
+	"""
+	class Meta:
+		model = User
+		fields = ['username','id']

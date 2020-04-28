@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-
+import { AssigneeService } from '../../assignee.service';
 @Component({
   selector: 'app-task-dialog',
   templateUrl: './task-dialog.component.html',
@@ -24,11 +24,15 @@ export class TaskDialogComponent implements OnInit {
     private projectService:ProjectService,
     private router: Router,
     private route:ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private assigneeService: AssigneeService
     ) {}
-
+  
+  users;
   ngOnInit(): void {
-    
+    this.assigneeService.fetchAllAssignees().subscribe(data=>{
+      this.users = data;
+    })
   }
 
   save(){

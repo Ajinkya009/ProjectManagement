@@ -9,12 +9,11 @@ export class ProjectService {
   constructor(private router:Router, private http:HttpClient) { }
 
   fetchProjectDetails(projectId){
-    const auth_token = localStorage.getItem('auth_token')
-    return this.http.get(`/api/project/${projectId}/`,{headers:{Authorization:`Token ${auth_token}`}});
+    return this.http.get(`/api/project/${projectId}/`);
   }
 
   createNewTask(name,description,startDate,endDate,assignee,projectId){
-    const auth_token = localStorage.getItem('auth_token');
+    
     return this.http.post(`/api/project/${projectId}/task/`,{
       name:name,
       description:description,
@@ -22,12 +21,12 @@ export class ProjectService {
       endDate:endDate,
       assignee:assignee,
       project:projectId
-    },{headers:{Authorization:`Token ${auth_token}` }});
+    });
   }
 
   updateProject(projectData){
-    const auth_token = localStorage.getItem('auth_token');
-    return this.http.put(`/api/project/${projectData.id}/`,projectData,{headers:{Authorization:`Token ${auth_token}`}});
+    
+    return this.http.put(`/api/project/${projectData.id}/`,projectData);
   }
 
 }

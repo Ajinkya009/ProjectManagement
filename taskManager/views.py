@@ -32,19 +32,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
 		user = self.request.user
 		return Project.objects.filter(Q(admin=user) | Q(tasks__assignee=user)).distinct()
 
-	def retrieve(self,request,*args,**kwargs):
-		"""
-		This method has been customised to append available users' list to project data.
-		This list will be used in assigning tasks to users.
-		"""
-		instance = self.get_object()
-		serializer = self.get_serializer(instance)
-		custom_data = {
-			'project': serializer.data,
-			'users': User.objects.values_list('username','id').order_by('id')
-		}
-		return Response(custom_data)
-
 class TaskViewSet(viewsets.ModelViewSet):
 	"""
 	This viewset provides Task functionality
