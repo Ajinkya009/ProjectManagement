@@ -1,10 +1,9 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 class Project(models.Model):
-	User 			=	get_user_model()
 	admin			=	models.ForeignKey(User,on_delete=models.CASCADE)
 	name			=	models.CharField(max_length=100)
 	description		=	models.TextField(max_length=300)
@@ -13,7 +12,6 @@ class Project(models.Model):
 
 
 class Task(models.Model):
-	User 			=	get_user_model()
 	project			=	models.ForeignKey(Project,related_name='tasks',on_delete=models.CASCADE)
 	name			=	models.CharField(max_length=100)
 	description		=	models.TextField(max_length=100)
